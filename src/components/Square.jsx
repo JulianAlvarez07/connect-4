@@ -14,7 +14,7 @@ export const Square = ({ children, updateBoard, index }) => {
   return (
     <div onClick={handleClick} className={className}>
       {/* Solo mostramos el emoji si existe */}
-      {["🔴", "🟡"].includes(children) ? children : ""}
+      {["🔴", "🟡"].includes(children) ? children : index.join(",")}
     </div>
   );
 };
