@@ -1,6 +1,10 @@
-import React, { Children, useState } from 'react'
-import { Square } from './Square'
-import { TurnIndicator } from './TurnIndicador'
+import React, { Children, useState } from 'react';
+import { Square } from './Square';
+import { TurnIndicator } from './TurnIndicador';
+import { ganadores } from '../constant';
+import Winner from './Winner';
+import ButtonReset from './ButtonReset';
+import { Board } from './Board';
 
 const TURNS = {
   RED: '🔴',
@@ -15,6 +19,8 @@ const Connect4 = () => {
 
   const [turn, setTurn] = useState(TURNS.RED)
 
+  const [winner, setWinner] = useState(null) //null que no hay ganador, false es que es empate
+
 
   const findEmptyRow = (board, col) => {
     for (let row = board.length - 1; row >= 0; row--) {
@@ -23,16 +29,48 @@ const Connect4 = () => {
     return null;
   };
 
+  const checkWinner = (board, ganadores) => {
+    for (const combo of ganadores) {
+      const [a, b, c, d] = combo;
+      const val = board[a[0]][a[1]];
+  
+      if (
+        val &&
+        val === board[b[0]][b[1]] &&
+        val === board[c[0]][c[1]] &&
+        val === board[d[0]][d[1]]
+      ) {
+        return { ganador: val, combo }; // Ganador + las posiciones ganadoras
+      }
+    }
+  
+    return null; // Si no hay ganador
+  };
+
+  const reiniciarJuego = () => {
+    setBoard(Array.from({ length: 6 }, () => Array(7).fill(null)));
+    setTurn(TURNS.RED);
+    setWinner(null);
+  };
   
   const updateBoard = ([, col]) => {
+    if (winner) return;
     const row = findEmptyRow(board, col);
-    if (row === null) return; // Columna llena
+
+    if (row === null) return; // Col llena
   
     const newBoard = [...board];
     const updatedRow = [...newBoard[row]];
     updatedRow[col] = turn;
     newBoard[row] = updatedRow;
     setBoard(newBoard);
+
+    //ver si hay ganador
+    const result = checkWinner(newBoard, ganadores); //revisamos con el nuevo tablero
+    if (result) {
+      setWinner(result.ganador);
+      return;
+    }
   
     const newTurn = turn === TURNS.RED ? TURNS.YELLOW : TURNS.RED;
     setTurn(newTurn);
@@ -42,21 +80,16 @@ const Connect4 = () => {
   return (
     <main className='flex flex-col items-center m-5'>
 
-      <div className="flex flex-col gap-2 p-4">
+      <Board board={board} updateBoard={updateBoard} />
 
-      {board.map((fila, i) => (
-        <div key={i} className="flex gap-2">
-          {fila.map((celda, j) => (
-            <Square key={j} updateBoard={updateBoard} index={[i, j]}>
-              {board[i][j]}
-            </Square>
-          ))}
-        </div>
-      ))}
-
-      </div>
-
+      <Winner winner={winner} />
+      
       <TurnIndicator turn={turn} />
+
+      <ButtonReset onClick={reiniciarJuego}> Reiniciar Juego</ButtonReset>
+      
+
+        
     </main>
 
   )

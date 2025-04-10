@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroui/react": "^2.7.6",
+    "@heroui/system": "^2.4.13",
+    "@heroui/theme": "^2.4.13",
     "@tailwindcss/vite": "^4.1.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.2"
   },
   "devDependencies": {
