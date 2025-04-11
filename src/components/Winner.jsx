@@ -1,15 +1,23 @@
-import React from 'react'
+import React from 'react';
+import Modal from './ui/Modal';
 
-const Winner = (winner) => {
+const Winner = ({ winner, onClick }) => {
+  if (!winner) return null;
+
+  let mensaje;
+  if (winner === "🔴") {
+    mensaje = "¡Ganador: Rojo 🔴!";
+  } else if (winner === "🟡") {
+    mensaje = "¡Ganador: Amarillo 🟡!";
+  } else {
+    mensaje = "¡Empate!";
+  }
+
   return (
-    <div>
-      {winner && (
-              <p className="text-xl font-bold mt-4">
-                Ganó {winner === "🔴" ? "Rojo" : "Amarillo"} 🎉
-              </p>
-            )}
-    </div>
-  )
-}
+    <Modal onClick={onClick}>
+      {mensaje}
+    </Modal>
+  );
+};
 
-export default Winner
+export default Winner;

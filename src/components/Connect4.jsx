@@ -3,7 +3,7 @@ import { Square } from './Square';
 import { TurnIndicator } from './TurnIndicador';
 import { ganadores } from '../constant';
 import Winner from './Winner';
-import ButtonReset from './ButtonReset';
+import ButtonReset from './ui/ButtonReset';
 import { Board } from './Board';
 
 const TURNS = {
@@ -82,7 +82,7 @@ const Connect4 = () => {
 
       <Board board={board} updateBoard={updateBoard} />
 
-      <Winner winner={winner} />
+      <Winner winner={winner} onClick={reiniciarJuego} />
       
       <TurnIndicator turn={turn} />
 
